@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Embedded Content</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+<iframe id="embeddedFrame" src="" frameborder="0"></iframe>
+
+<script>
+    // Base64 encoded URL (replace this with your desired encoded URL)
+    var base64URL = "BASE64_ENCODED_URL_HERE";
+
+    // Create an iframe element reference
+    var iframe = document.getElementById('embeddedFrame');
+
+    // Set iframe source to the decoded URL
+    iframe.src = atob(base64URL);
+
+    // Set the iframe title to match the title of the loaded content
+    iframe.onload = function() {
+        var title = iframe.contentDocument.title;
+        document.title = title;
+    };
+
+    // Set the favicon of the main page to match the favicon of the loaded content
+    iframe.addEventListener('load', function() {
+        var favicon = iframe.contentDocument.querySelector("link[rel*='icon']");
+        if (favicon !== null) {
+            var faviconHref = favicon.getAttribute('href');
+            var iconLink = document.createElement('link');
+            iconLink.rel = 'icon';
+            iconLink.href = faviconHref;
+            document.head.appendChild(iconLink);
+        }
+    });
+</script>
+
+</body>
+</html>
